@@ -19,7 +19,7 @@
 ### The first endpoint displays a list of possible moves for a given {chess-figure} figure from the indicated {current-field}.
 ### Example:
 - http://127.0.0.1:5000/api/v1/pawn/a1
-### Returns:
+### In case everything is ok and mail was successfully sent API returns:
 
 ### {
     "availableMoves": [
@@ -31,6 +31,46 @@
     "figure": "pawn",
     "currentField": "a1"
 }
+
+### Otherwise:
+- http://127.0.0.1:5000/api/v1/pSawn/a1
+
+### You'll get response:
+
+### {
+    "availableMoves": [],
+    "error": "Figure does not exist.",
+    "figure": "pSawn",
+    "currentField": "a1"
+}
+
+### The second endpoint validates whether the movement to the indicated field is correct.
+
+### Example:
+- http://127.0.0.1:5000/api/v1/pawn/a1/a2
+### In case everything is ok and mail was successfully sent API returns:
+
+### {
+    "move": "valid",
+    "figure": "pawn",
+    "error": "null",
+    "currentField": "a1",
+    "destField": "a2"
+}
+
+### Otherwise:
+- http://127.0.0.1:5000/api/v1/pSawn/a1/b5
+
+### You'll get response:
+
+### {
+    "move": "invalid",
+    "figure": "pawn",
+    "error": "Current move is not permitted.",
+    "currentField": "a1",
+    "destField": "b5"
+}
+
 
 
 
