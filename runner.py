@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api
-from rest_views import Available_Moves, Validate_Move
+from app.rest_views import Available_Moves, Validate_Move
 
 app = Flask(__name__)
 api = Api()

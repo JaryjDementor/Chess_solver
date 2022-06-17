@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from .views import Rook, Bishop, Queen, King, Knight, Pawn, check_figure_field
+from .views import *
 
 
 class Available_Moves(Resource):
