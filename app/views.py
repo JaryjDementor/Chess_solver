@@ -1,14 +1,21 @@
-
 def check_figure_field(figure, field):
     figures = ["bishop", "rook", "queen", "king", "knight", "pawn"]
     letters_board = ["a", "b", "c", "d", "e", "f", "g", "h"]
-    if figure in figures and field[0] in letters_board and len(field) ==2 and field[0].isalpha() and field[-1].isdigit() and 0<int(field[-1])<9:
+    if (
+        figure in figures
+        and field[0] in letters_board
+        and len(field) == 2
+        and field[0].isalpha()
+        and field[-1].isdigit()
+        and 0 < int(field[-1]) < 9
+    ):
         list_data = [figure, field]
         return list_data
     else:
         return []
 
-class Figure():
+
+class Figure:
 
     letters_board = ["a", "b", "c", "d", "e", "f", "g", "h"]
     board = [str(i) + "." + str(j) for i in range(1, 9) for j in range(1, 9)]
@@ -17,11 +24,13 @@ class Figure():
         self.field = field
         self.figura = figure
 
-    def letter_change_number(self): # example: a1 > 1.1; c1 > 3.1
-        new_field = str(Figure.letters_board.index(self.field[0]) + 1) + "." + self.field[1:]
+    def letter_change_number(self):  # example: a1 > 1.1; c1 > 3.1
+        new_field = (
+            str(Figure.letters_board.index(self.field[0]) + 1) + "." + self.field[1:]
+        )
         return new_field
 
-    def number_change_letter(self, list_moves): # example: 1.1 > a1; 3.1 > c1
+    def number_change_letter(self, list_moves):  # example: 1.1 > a1; 3.1 > c1
         moves_list = []
         for i in list_moves:
             b = Figure.letters_board[int(i[0]) - 1] + i[-1]
@@ -88,16 +97,16 @@ class Figure():
         available_moves = Figure.number_change_letter(self, list_moves)
         return available_moves
 
-    def list_available_moves(self): #list_available_moves(),
-        if self.figura == 'rook':
-            available_moves_rook=Figure.moves_rook(self)
+    def list_available_moves(self):  # list_available_moves(),
+        if self.figura == "rook":
+            available_moves_rook = Figure.moves_rook(self)
             return available_moves_rook
 
-        if self.figura == 'bishop':
+        if self.figura == "bishop":
             available_moves_bishop = Figure.moves_bishop(self)
             return available_moves_bishop
 
-        if self.figura == 'king':
+        if self.figura == "king":
             number_field = Figure.letter_change_number(self)
             list_moves = []
             list_cor = [
@@ -119,14 +128,14 @@ class Figure():
             available_moves_king = Figure.number_change_letter(self, list_moves)
             return available_moves_king
 
-        if self.figura == 'queen':
+        if self.figura == "queen":
             list_moves_bishop = Figure.moves_bishop(self)
             list_moves_rook = Figure.moves_rook(self)
             for i in list_moves_rook:
                 list_moves_bishop.append(i)
             return list_moves_bishop
 
-        if self.figura == 'knight':
+        if self.figura == "knight":
             number_field = Figure.letter_change_number(self)
             list_moves = []
             list_cor = [
@@ -148,8 +157,7 @@ class Figure():
                 available_moves_knight = Figure.number_change_letter(self, list_moves)
             return available_moves_knight
 
-
-        if self.figura == 'pawn':
+        if self.figura == "pawn":
             number_field = Figure.letter_change_number(self)
             if number_field in Figure.board and number_field[-1] != "8":
                 list_moves = []
@@ -161,7 +169,9 @@ class Figure():
             else:
                 return []
 
-    def validate_move(self, dest_field):  # informującą, czymożliwy jest ruch na wskazane pole.
+    def validate_move(
+        self, dest_field
+    ):  # informującą, czymożliwy jest ruch na wskazane pole.
         if dest_field in Figure.list_available_moves(self):
             return dest_field
         else:
@@ -171,16 +181,22 @@ class Figure():
 class Rook(Figure):
     pass
 
+
 class Bishop(Figure):
     pass
 
+
 class King(Figure):
     pass
+
+
 class Queen(Figure):
     pass
 
+
 class Knight(Figure):
     pass
+
 
 class Pawn(Figure):
     pass

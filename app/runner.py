@@ -8,7 +8,9 @@ api = Api()
 
 api.add_resource(Available_Moves, "/api/v1/<string:figure>/<string:field>")
 
-api.add_resource(Validate_Move, "/api/v1/<string:figure>/<string:field>/<string:dest_field>")
+api.add_resource(
+    Validate_Move, "/api/v1/<string:figure>/<string:field>/<string:dest_field>"
+)
 
 api.init_app(app)
 
