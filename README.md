@@ -8,3 +8,6 @@
 ## To run this application, you need to install requirements:
 ### pip install -r requirements.txt
 
+## To start the application, type in the terminal:
+### python runner.py
+
