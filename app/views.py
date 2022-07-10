@@ -1,19 +1,56 @@
 def check_figure_field(figure, field):
+    list_data = []
     figures = ["bishop", "rook", "queen", "king", "knight", "pawn"]
     letters_board = ["a", "b", "c", "d", "e", "f", "g", "h"]
-    if (
-        figure in figures
-        and field[0] in letters_board
-        and len(field) == 2
-        and field[0].isalpha()
-        and field[-1].isdigit()
-        and 0 < int(field[-1]) < 9
-    ):
-        list_data = [figure, field]
-        return list_data
-    else:
-        return []
 
+    if figure in figures:
+        list_data.append(figure)
+
+    if field[0] in letters_board and len(field) == 2 and field[0].isalpha() and field[
+        -1].isdigit() and 0 < int(field[-1]) < 9:
+        list_data.append(field)
+
+    return list_data
+
+def ret(aval, data, dest_field=None, figure=None, field=None, validate_move=None):
+    code_error = None
+    error = None
+    move = 'invalid'
+    if not dest_field:
+        if figure in data and field in data:
+            error = 'null'
+            code_error = 200
+        elif len(data) == 1:
+            if field in data:
+                error = "Figure does not exist."
+                code_error = 404
+            else:
+                error = "Field does not exist."
+                code_error = 409
+        else:
+            error = "Field and figure does not exist."
+            code_error = 404
+
+        return {
+            "availableMoves": aval,
+            "error": error,
+            "figure": figure,
+            "currentField": field
+        }, code_error
+    else:
+        if len(validate_move) != 0:
+            code_error = 200
+            move = 'valid'
+        else:
+            code_error = 409
+            error = "Current move is not permitted."
+
+        return {"move": move,
+                "figure": figure,
+                "error": error,
+                "currentField": field,
+                "destField": dest_field,
+               }, code_error
 
 class Figure:
 
@@ -23,6 +60,7 @@ class Figure:
     def __init__(self, field, figure):
         self.field = field
         self.figura = figure
+
 
     def letter_change_number(self):  # example: a1 > 1.1; c1 > 3.1
         new_field = (
@@ -37,7 +75,18 @@ class Figure:
             moves_list.append(b)
         return moves_list
 
-    def moves_rook(self):
+    def list_available_moves(self):  # list_available_moves(),
+        pass
+
+    def validate_move(self, dest_field):  # informującą, czymożliwy jest ruch na wskazane pole.
+        if dest_field in self.list_available_moves():
+            return dest_field
+        else:
+            return []
+
+
+class Rook(Figure):
+    def list_available_moves(self):
         number_field = Figure.letter_change_number(self)
         if number_field in Figure.board:
             list_moves = []
@@ -48,7 +97,10 @@ class Figure:
             available_moves = Figure.number_change_letter(self, list_moves)
             return available_moves
 
-    def moves_bishop(self):
+
+class Bishop(Figure):
+    def list_available_moves(self):
+        super().list_available_moves()
         number_field = Figure.letter_change_number(self)
         number_field_for_while = number_field
 
@@ -97,106 +149,75 @@ class Figure:
         available_moves = Figure.number_change_letter(self, list_moves)
         return available_moves
 
-    def list_available_moves(self):  # list_available_moves(),
-        if self.figura == "rook":
-            available_moves_rook = Figure.moves_rook(self)
-            return available_moves_rook
-
-        if self.figura == "bishop":
-            available_moves_bishop = Figure.moves_bishop(self)
-            return available_moves_bishop
-
-        if self.figura == "king":
-            number_field = Figure.letter_change_number(self)
-            list_moves = []
-            list_cor = [
-                [-1, 1],
-                [1, 1],
-                [1, -1],
-                [-1, -1],
-                [-1, 0],
-                [0, -1],
-                [1, 0],
-                [0, 1],
-            ]
-            for i in list_cor:
-                x = int(number_field[0]) + i[0]
-                y = int(number_field[-1]) + i[1]
-                cor_xy = str(x) + "." + str(y)
-                if x != 0 and y != 0 and cor_xy in Figure.board:
-                    list_moves.append(cor_xy)
-            available_moves_king = Figure.number_change_letter(self, list_moves)
-            return available_moves_king
-
-        if self.figura == "queen":
-            list_moves_bishop = Figure.moves_bishop(self)
-            list_moves_rook = Figure.moves_rook(self)
-            for i in list_moves_rook:
-                list_moves_bishop.append(i)
-            return list_moves_bishop
-
-        if self.figura == "knight":
-            number_field = Figure.letter_change_number(self)
-            list_moves = []
-            list_cor = [
-                [-1, 2],
-                [-2, 1],
-                [-2, -1],
-                [-1, -2],
-                [1, -2],
-                [2, -1],
-                [2, 1],
-                [1, 2],
-            ]
-            for i in list_cor:
-                x = int(number_field[0]) + i[0]
-                y = int(number_field[-1]) + i[1]
-                cor_xy = str(x) + "." + str(y)
-                if x != 0 and y != 0 and cor_xy in Figure.board:
-                    list_moves.append(cor_xy)
-                available_moves_knight = Figure.number_change_letter(self, list_moves)
-            return available_moves_knight
-
-        if self.figura == "pawn":
-            number_field = Figure.letter_change_number(self)
-            if number_field in Figure.board and number_field[-1] != "8":
-                list_moves = []
-                y = int(number_field[-1]) + 1
-
-                list_moves.append(number_field[:2] + str(y))
-                available_moves_pawn = Figure.number_change_letter(self, list_moves)
-                return available_moves_pawn
-            else:
-                return []
-
-    def validate_move(
-        self, dest_field
-    ):  # informującą, czymożliwy jest ruch na wskazane pole.
-        if dest_field in Figure.list_available_moves(self):
-            return dest_field
-        else:
-            return []
-
-
-class Rook(Figure):
-    pass
-
-
-class Bishop(Figure):
-    pass
-
 
 class King(Figure):
-    pass
+    def list_available_moves(self):
+
+        number_field = Figure.letter_change_number(self)
+        list_moves = []
+        list_cor = [
+            [-1, 1],
+            [1, 1],
+            [1, -1],
+            [-1, -1],
+            [-1, 0],
+            [0, -1],
+            [1, 0],
+            [0, 1],
+        ]
+        for i in list_cor:
+            x = int(number_field[0]) + i[0]
+            y = int(number_field[-1]) + i[1]
+            cor_xy = str(x) + "." + str(y)
+            if x != 0 and y != 0 and cor_xy in Figure.board:
+                list_moves.append(cor_xy)
+        available_moves_king = Figure.number_change_letter(self, list_moves)
+        return available_moves_king
 
 
 class Queen(Figure):
-    pass
-
+    def list_available_moves(self):
+        bishop = Bishop(self.field, self.figura)
+        rook = Rook(self.field, self.figura)
+        list_moves_bishop = bishop.list_available_moves()
+        list_moves_rook = rook.list_available_moves()
+        for i in list_moves_rook:
+            list_moves_bishop.append(i)
+        return list_moves_bishop
 
 class Knight(Figure):
-    pass
+    def list_available_moves(self):
+        number_field = Figure.letter_change_number(self)
+        list_moves = []
+        list_cor = [
+            [-1, 2],
+            [-2, 1],
+            [-2, -1],
+            [-1, -2],
+            [1, -2],
+            [2, -1],
+            [2, 1],
+            [1, 2],
+        ]
+        for i in list_cor:
+            x = int(number_field[0]) + i[0]
+            y = int(number_field[-1]) + i[1]
+            cor_xy = str(x) + "." + str(y)
+            if x != 0 and y != 0 and cor_xy in Figure.board:
+                list_moves.append(cor_xy)
+            available_moves_knight = Figure.number_change_letter(self, list_moves)
+            return available_moves_knight
 
 
 class Pawn(Figure):
-    pass
+    def list_available_moves(self):
+        number_field = Figure.letter_change_number(self)
+        if number_field in Figure.board and number_field[-1] != "8":
+            list_moves = []
+            y = int(number_field[-1]) + 1
+
+            list_moves.append(number_field[:2] + str(y))
+            available_moves_pawn = Figure.number_change_letter(self, list_moves)
+            return available_moves_pawn
+        else:
+            return []

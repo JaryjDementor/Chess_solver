@@ -1,11 +1,28 @@
 from flask_restful import Resource
 from .views import *
-
+def check_figure_field(figure, field):
+    figures = ["bishop", "rook", "queen", "king", "knight", "pawn"]
+    letters_board = ["a", "b", "c", "d", "e", "f", "g", "h"]
+    if (
+        figure in figures
+        and field[0] in letters_board
+        and len(field) == 2
+        and field[0].isalpha()
+        and field[-1].isdigit()
+        and 0 < int(field[-1]) < 9
+    ):
+        list_data = [figure, field]
+        return list_data
+    else:
+        return []
 
 class Available_Moves(Resource):
     def get(self, figure, field):
-        check_data = check_figure_field(figure, field)
-        if check_data:
+        check_data = 'dupa'
+        figura = Figure(figure, field)
+        check_data = check_figure_field(figure,field)
+        print(check_data)
+        if check_data != 'dupa':
 
             if figure == "rook":
                 list_moves = Rook(field, figure)
@@ -58,7 +75,8 @@ class Available_Moves(Resource):
 
 class Validate_Move(Resource):
     def get(self, figure, field, dest_field):
-        check_data = check_figure_field(figure, field)
+        figura = Figure(figure, field)
+        check_data = figura.check_figure_field()
         if check_data:
             if figure == "rook":
                 list_moves = Rook(field, figure)
