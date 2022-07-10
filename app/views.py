@@ -17,7 +17,7 @@ def check_figure_field(figure, field):
 
     return list_data
 
-def ret(aval, data, dest_field=None, figure=None, field=None, validate_move=None):
+def response(aval, data, dest_field=None, figure=None, field=None, validate_move=None):
     code_error = None
     error = None
     move = 'invalid'
@@ -56,6 +56,7 @@ def ret(aval, data, dest_field=None, figure=None, field=None, validate_move=None
                 "currentField": field,
                 "destField": dest_field,
                }, code_error
+
 
 class Figure:
 
