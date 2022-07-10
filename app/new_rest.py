@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from .views import str_to_class, check_figure_field, response, Rook, Bishop, King, Queen, Knight, Pawn
+from .views import str_to_class, check_figure_field, response
 
 class Available_Moves(Resource):
     def get(self, figure, field, dest_field=None):
