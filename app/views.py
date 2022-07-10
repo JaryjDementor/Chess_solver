@@ -1,3 +1,8 @@
+import sys
+
+def str_to_class(str):
+    return getattr(sys.modules[__name__], str)
+
 def check_figure_field(figure, field):
     list_data = []
     figures = ["bishop", "rook", "queen", "king", "knight", "pawn"]

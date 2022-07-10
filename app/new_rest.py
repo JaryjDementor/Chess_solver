@@ -7,43 +7,12 @@ class Available_Moves(Resource):
         available_moves_figure = []
         validate_move = None
         if check_data and len(check_data) == 2:
-            if figure == "rook":
-                rook = Rook(field, figure)
-                if not dest_field:
-                    available_moves_figure = rook.list_available_moves()
-                else:
-                    validate_move = rook.validate_move(dest_field)
-            elif figure == "bishop":
-                bishop = Bishop(field, figure)
-                if not dest_field:
-                    available_moves_figure = bishop.list_available_moves()
-                else:
-                    validate_move = bishop.validate_move(dest_field)
-            elif figure == "queen":
-                queen = Queen(field, figure)
-                if not dest_field:
-                    available_moves_figure = queen.list_available_moves()
-                else:
-                    validate_move = queen.validate_move(dest_field)
-            elif figure == "king":
-                king = King(field, figure)
-                if not dest_field:
-                    available_moves_figure = king.list_available_moves()
-                else:
-                    validate_move = king.validate_move(dest_field)
-            elif figure == "knight":
-                knight = Knight(field, figure)
-                if not dest_field:
-                    available_moves_figure = knight.list_available_moves()
-                else:
-                    validate_move = knight.validate_move(dest_field)
-            elif figure == "pawn":
-                pawn = Pawn(field, figure)
-                if not dest_field:
-                    available_moves_figure = pawn.list_available_moves()
-                else:
-                    validate_move = pawn.validate_move(dest_field)
-
+            class_figure = str_to_class(figure.title())
+            class_figure = class_figure(field, figure)
+            if not dest_field:
+                available_moves_figure = class_figure.list_available_moves()
+            else:
+                validate_move = class_figure.validate_move(dest_field)
 
         else:
             response = ret(available_moves_figure, check_data, dest_field, figure, field, validate_move)
