@@ -1,9 +1,11 @@
 from flask_restful import Resource
-from .views import str_to_class, check_figure_field, response
+from .views_figure import Rook, Bishop, King, Queen, Knight, Pawn, str_to_class
+from . import views
+
 
 class Available_Moves(Resource):
     def get(self, figure, field, dest_field=None):
-        check_data = check_figure_field(figure, field)
+        check_data = views.check_figure_field(figure, field)
         available_moves_figure = []
         validate_move = None
         if check_data and len(check_data) == 2:
@@ -15,11 +17,11 @@ class Available_Moves(Resource):
                 validate_move = class_figure.validate_move(dest_field)
 
         else:
-            respons = response(available_moves_figure, check_data, dest_field, figure, field, validate_move)
+            respons = views.response(available_moves_figure, check_data, dest_field, figure, field, validate_move)
 
             return respons
 
-        respons = response(available_moves_figure, check_data, dest_field, figure, field, validate_move)
+        respons = views.response(available_moves_figure, check_data, dest_field, figure, field, validate_move)
 
         return respons
 
