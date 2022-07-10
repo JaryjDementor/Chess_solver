@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_restful import Api
-# from app.rest_views import Available_Moves, Validate_Move
 from app.new_rest import Available_Moves, Validate_Move
 
 app = Flask(__name__)
